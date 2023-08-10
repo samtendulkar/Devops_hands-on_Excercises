@@ -1,0 +1,17 @@
+- hosts: webserver
+  become: true
+  become_user: root
+  tasks:
+  - name: install git,docker
+    yum:
+     name: "{{ item }}"
+     state: present
+    vars:
+      item:
+      - git
+      - docker
+  
+  - name: start the docker
+    service:
+     name: docker
+     state: started
