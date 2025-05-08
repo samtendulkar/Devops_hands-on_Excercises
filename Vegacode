@@ -1,45 +1,59 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "data": {
-    "url": {
-      "%context%": true,
-      "%timefield%": "@timestamp",
-      "index": "your-index-name",
-      "body": {
-        "size": 0,
-        "aggs": {
-          "unique_app_codes": {
-            "terms": {
-              "field": "app_code.keyword",
-              "size": 1000
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "width": 300,
+  "height": {"signal": "length * 20"},
+  "padding": 5,
+  "signals": [
+    {
+      "name": "length",
+      "update": "data('app_codes').length"
+    }
+  ],
+  "data": [
+    {
+      "name": "app_codes",
+      "url": {
+        "%context%": true,
+        "%timefield%": "@timestamp",
+        "index": "your-index-name",
+        "body": {
+          "size": 0,
+          "aggs": {
+            "unique_app_codes": {
+              "terms": {
+                "field": "app_code.keyword",
+                "size": 1000
+              }
             }
           }
         }
-      }
-    },
-    "format": {
-      "property": "aggregations.unique_app_codes.buckets"
+      },
+      "format": {"property": "aggregations.unique_app_codes.buckets"}
     }
-  },
-  "mark": "text",
-  "encoding": {
-    "y": {
-      "field": "key",
-      "type": "ordinal",
-      "axis": {"title": "App Code"}
-    },
-    "text": {"field": "key"},
-    "x": {
-      "value": 10
+  ],
+  "marks": [
+    {
+      "type": "text",
+      "from": {"data": "app_codes"},
+      "encode": {
+        "enter": {
+          "x": {"value": 10},
+          "y": {"signal": "20 * datum.index"},
+          "text": {"field": "key"},
+          "fontSize": {"value": 14},
+          "align": {"value": "left"},
+          "baseline": {"value": "top"},
+          "fill": {"value": "#333"}
+        }
+      },
+      "transform": [
+        {
+          "type": "rank",
+          "field": "key",
+          "as": "index"
+        }
+      ]
     }
-  },
-  "config": {
-    "view": {
-      "stroke": "transparent"
-    },
-    "axis": {
-      "domain": false,
-      "ticks": false
-    }
-  }
+  ]
 }
+      
