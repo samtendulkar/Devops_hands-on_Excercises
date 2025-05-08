@@ -1,0 +1,37 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "width": 200,
+  "height": 200,
+  "data": [
+    {
+      "name": "table",
+      "values": [
+        {"category": "A"},
+        {"category": "B"},
+        {"category": "C"}
+      ],
+      "transform": [
+        {
+          "type": "window",
+          "as": "row_number"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "type": "text",
+      "from": {"data": "table"},
+      "encode": {
+        "enter": {
+          "x": {"value": 10},
+          "y": {"expr": "datum.row_number * 20"},
+          "text": {"field": "category"},
+          "fontSize": {"value": 14},
+          "align": {"value": "left"},
+          "baseline": {"value": "top"}
+        }
+      }
+    }
+  ]
+}
