@@ -1,0 +1,45 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "url": {
+      "%context%": true,
+      "%timefield%": "@timestamp",
+      "index": "your-index-name",
+      "body": {
+        "size": 0,
+        "aggs": {
+          "unique_app_codes": {
+            "terms": {
+              "field": "app_code.keyword",
+              "size": 1000
+            }
+          }
+        }
+      }
+    },
+    "format": {
+      "property": "aggregations.unique_app_codes.buckets"
+    }
+  },
+  "mark": "text",
+  "encoding": {
+    "y": {
+      "field": "key",
+      "type": "ordinal",
+      "axis": {"title": "App Code"}
+    },
+    "text": {"field": "key"},
+    "x": {
+      "value": 10
+    }
+  },
+  "config": {
+    "view": {
+      "stroke": "transparent"
+    },
+    "axis": {
+      "domain": false,
+      "ticks": false
+    }
+  }
+}
