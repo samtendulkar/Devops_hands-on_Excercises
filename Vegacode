@@ -1,14 +1,9 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "autosize": "none",
   "width": 300,
-  "height": {"signal": "length * 20"},
+  "height": {"signal": "app_codes.length * 20"},
   "padding": 5,
-  "signals": [
-    {
-      "name": "length",
-      "update": "data('app_codes').length"
-    }
-  ],
   "data": [
     {
       "name": "app_codes",
@@ -28,7 +23,17 @@
           }
         }
       },
-      "format": {"property": "aggregations.unique_app_codes.buckets"}
+      "format": {"property": "aggregations.unique_app_codes.buckets"},
+      "transform": [
+        {
+          "type": "collect",
+          "sort": {"field": "key", "order": "ascending"}
+        },
+        {
+          "type": "window",
+          "as": "row_number"
+        }
+      ]
     }
   ],
   "marks": [
@@ -38,21 +43,14 @@
       "encode": {
         "enter": {
           "x": {"value": 10},
-          "y": {"signal": "20 * datum.index"},
+          "y": {"expr": "datum.row_number * 20"},
           "text": {"field": "key"},
           "fontSize": {"value": 14},
           "align": {"value": "left"},
           "baseline": {"value": "top"},
           "fill": {"value": "#333"}
         }
-      },
-      "transform": [
-        {
-          "type": "rank",
-          "field": "key",
-          "as": "index"
-        }
-      ]
+      }
     }
   ]
 }
