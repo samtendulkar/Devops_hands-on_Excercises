@@ -1,35 +1,24 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "width": 200,
-  "height": 200,
+  "height": 100,
   "data": [
     {
-      "name": "table",
-      "values": [
-        {"category": "A"},
-        {"category": "B"},
-        {"category": "C"}
-      ],
-      "transform": [
-        {
-          "type": "window",
-          "as": "row_number"
-        }
-      ]
+      "name": "hello",
+      "values": [{"msg": "Hello, Vega!"}]
     }
   ],
   "marks": [
     {
       "type": "text",
-      "from": {"data": "table"},
+      "from": {"data": "hello"},
       "encode": {
         "enter": {
           "x": {"value": 10},
-          "y": {"expr": "datum.row_number * 20"},
-          "text": {"field": "category"},
-          "fontSize": {"value": 14},
-          "align": {"value": "left"},
-          "baseline": {"value": "top"}
+          "y": {"value": 50},
+          "text": {"field": "msg"},
+          "fontSize": {"value": 20},
+          "fill": {"value": "darkblue"}
         }
       }
     }
